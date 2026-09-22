@@ -17,6 +17,7 @@ import { Home } from './pages/Home';
 import { Products } from './pages/Products';
 import { ProductDetails } from './pages/ProductDetails';
 import { CustomerInquiry } from './pages/CustomerInquiry';
+import { About } from './pages/About';
 
 import { AdminLogin } from './pages/admin/AdminLogin';
 import { Dashboard } from './pages/admin/Dashboard';
@@ -166,6 +167,7 @@ export function AppContent() {
             path="/products/:id"
             element={<ProductDetails onRaiseInquiry={handleRaiseInquiry} />}
           />
+          <Route path="/about" element={<About />} />
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />

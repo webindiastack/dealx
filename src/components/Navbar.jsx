@@ -34,8 +34,9 @@ export const Navbar = ({ onOpenCustomerModal, onOpenQueriesModal }) => {
 
   const getActiveNavIndex = () => {
     if (location.pathname === '/') return 0;
-    if (location.pathname === '/products') return 1;
+    if (location.pathname.startsWith('/products')) return 1;
     if (location.pathname === '/inquiry') return 2;
+    if (location.pathname === '/about') return 3;
     return 0;
   };
 
@@ -130,12 +131,24 @@ export const Navbar = ({ onOpenCustomerModal, onOpenQueriesModal }) => {
           >
             Customer Form
           </Link>
-          <button
-            onClick={onOpenQueriesModal}
+          <Link
+            to="/about"
             ref={(el) => (navRefs.current[3] = el)}
             onMouseEnter={() => setHoveredNav(3)}
-            className={`relative z-10 px-4 py-2 rounded-full text-xs font-black text-center flex items-center justify-center gap-1.5 transition-colors duration-200 ${
+            className={`relative z-10 px-5 py-2 rounded-full text-xs font-black text-center flex items-center justify-center transition-colors duration-200 ${
               currentNavIndex === 3
+                ? 'text-brand-600 dark:text-amber-300 font-extrabold'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
+            }`}
+          >
+            About Us
+          </Link>
+          <button
+            onClick={onOpenQueriesModal}
+            ref={(el) => (navRefs.current[4] = el)}
+            onMouseEnter={() => setHoveredNav(4)}
+            className={`relative z-10 px-4 py-2 rounded-full text-xs font-black text-center flex items-center justify-center gap-1.5 transition-colors duration-200 ${
+              currentNavIndex === 4
                 ? 'text-amber-600 dark:text-amber-300 font-extrabold'
                 : 'text-amber-600 dark:text-amber-400 hover:text-amber-700 dark:hover:text-amber-300'
             }`}
@@ -350,6 +363,13 @@ export const Navbar = ({ onOpenCustomerModal, onOpenQueriesModal }) => {
             className="block px-3 py-2 rounded-lg text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-100 dark:hover:bg-slate-900"
           >
             Customer Registration Form
+          </Link>
+          <Link
+            to="/about"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block px-3 py-2 rounded-lg text-slate-700 dark:text-slate-200 font-semibold hover:bg-slate-100 dark:hover:bg-slate-900"
+          >
+            About Us
           </Link>
           <Link
             to={isAdmin ? '/admin' : '/admin/login'}

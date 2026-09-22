@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useProducts } from '../context/ProductContext';
 import { useCustomer } from '../context/CustomerContext';
 import { useInquiry } from '../context/InquiryContext';
 import { formatCurrency, formatDate } from '../utils/localStorage';
+import { ProductCard } from '../components/ProductCard';
 import {
   ArrowLeft,
+  ArrowRight,
   MapPin,
   MessageSquarePlus,
   ShieldCheck,
@@ -25,6 +27,27 @@ export const ProductDetails = ({ onRaiseInquiry }) => {
 
   const product = products.find((p) => p.id === id);
   const [selectedImage, setSelectedImage] = useState(0);
+
+  // Scroll to top when product ID changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    setSelectedImage(0);
+  }, [id]);
+
+  // Compute Related Products matching current product's category or featured luxury catalog
+  const relatedProducts = useMemo(() => {
+    if (!product) return [];
+    const sameCategory = products.filter(
+      (p) => p.category === product.category && p.id !== product.id
+    );
+    if (sameCategory.length >= 2) {
+      return sameCategory.slice(0, 4);
+    }
+    const otherProducts = products.filter(
+      (p) => p.id !== product.id && p.category !== product.category
+    );
+    return [...sameCategory, ...otherProducts].slice(0, 4);
+  }, [products, product]);
 
   if (!product) {
     return (
@@ -260,6 +283,44 @@ export const ProductDetails = ({ onRaiseInquiry }) => {
           </div>
         </div>
       </div>
+
+      {/* Related Products & Similar Recommendations Section */}
+      {relatedProducts.length > 0 && (
+        <section className="pt-10 border-t border-slate-200 dark:border-slate-800 space-y-6 mt-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+            <div className="space-y-1">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20 badge-font">
+                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                Curated Recommendations
+              </div>
+              <h2 className="font-serif text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                Related Luxury Deals You Might Like
+              </h2>
+              <p className="text-xs text-slate-600 dark:text-slate-400 font-medium">
+                Explore similar verified luxury items from the <strong className="text-brand-600 dark:text-brand-400 uppercase">{product.category}</strong> category & marketplace.
+              </p>
+            </div>
+
+            <Link
+              to="/products"
+              className="group inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-900 text-xs font-bold text-slate-700 dark:text-slate-300 hover:text-brand-600 dark:hover:text-brand-400 border border-slate-200 dark:border-slate-800 transition-all shadow-sm"
+            >
+              <span>View Full Catalog ({products.length})</span>
+              <ArrowRight className="w-3.5 h-3.5 text-brand-500 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {relatedProducts.map((relProd) => (
+              <ProductCard
+                key={relProd.id}
+                product={relProd}
+                onRaiseInquiry={onRaiseInquiry}
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 };

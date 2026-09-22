@@ -51,6 +51,81 @@ export const Home = ({ onRaiseInquiry, onOpenCustomerModal, onOpenQueriesModal }
   const queriesSectionRef = useRef(null);
 
   const [currentBgIndex, setCurrentBgIndex] = useState(0);
+  const [reviewModalOpen, setReviewModalOpen] = useState(false);
+  const [reviews, setReviews] = useState(() => {
+    const saved = localStorage.getItem('dealing_app_reviews');
+    if (saved) return JSON.parse(saved);
+    return [
+      {
+        id: 'rev-1',
+        name: 'Harpreet Singh',
+        location: 'San Francisco, CA',
+        purchasedItem: '2026 Porsche Taycan Turbo S GTS',
+        rating: 5,
+        comment: 'The smart inquiry auto-matching connected me directly with the dealer within minutes of setting up my profile. Test drive scheduled and closed effortlessly!',
+        date: '2026-09-15',
+      },
+      {
+        id: 'rev-2',
+        name: 'Marcus Vance',
+        location: 'Seattle, WA',
+        purchasedItem: 'Apple MacBook Pro 16" M3 Max',
+        rating: 5,
+        comment: 'Found an open-box 64GB workstation at an incredible price. Raised a single query linked to my profile and received immediate verification.',
+        date: '2026-09-18',
+      },
+      {
+        id: 'rev-3',
+        name: 'Sarah Connor',
+        location: 'Austin, TX',
+        purchasedItem: 'Ducati Panigale V4 S Superbike',
+        rating: 5,
+        comment: 'Browsing verified superbike inventory was fantastic. Dealer responded directly with exact pricing and inspection details. 10/10 service!',
+        date: '2026-09-20',
+      },
+      {
+        id: 'rev-4',
+        name: 'Elena Rostova',
+        location: 'New York, NY',
+        purchasedItem: 'Rolex Submariner Date "Kermit"',
+        rating: 5,
+        comment: 'Authenticity and profile binding make all the difference when dealing high-value luxury watches. Seamless customer onboarding and fast response!',
+        date: '2026-09-21',
+      },
+    ];
+  });
+
+  const [newReview, setNewReview] = useState({
+    name: activeCustomer?.name || '',
+    location: activeCustomer?.location || '',
+    purchasedItem: 'Porsche Taycan / Ducati / Apple / Rolex',
+    rating: 5,
+    comment: '',
+  });
+
+  const handleReviewSubmit = (e) => {
+    e.preventDefault();
+    const createdReview = {
+      id: `rev-${Date.now()}`,
+      name: newReview.name || 'Anonymous VIP',
+      location: newReview.location || 'USA',
+      purchasedItem: newReview.purchasedItem || 'Luxury Asset',
+      rating: newReview.rating || 5,
+      comment: newReview.comment,
+      date: new Date().toISOString().split('T')[0],
+    };
+    const updated = [createdReview, ...reviews];
+    setReviews(updated);
+    localStorage.setItem('dealing_app_reviews', JSON.stringify(updated));
+    setReviewModalOpen(false);
+    setNewReview({
+      name: activeCustomer?.name || '',
+      location: activeCustomer?.location || '',
+      purchasedItem: '',
+      rating: 5,
+      comment: '',
+    });
+  };
 
   // Preload all background images to eliminate any network load delays or black screen flashes
   useEffect(() => {
@@ -393,6 +468,282 @@ export const Home = ({ onRaiseInquiry, onOpenCustomerModal, onOpenQueriesModal }
           </div>
         </div>
       </section>
+
+      {/* 5th: Trust & Platform Performance Stats */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-gradient-to-r from-brand-900/90 via-slate-900 to-indigo-950/90 rounded-[28px] p-8 border border-brand-500/30 shadow-2xl backdrop-blur-xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-x-0 md:divide-x divide-slate-800/80">
+            <div className="space-y-1 p-2">
+              <div className="text-3xl sm:text-4xl font-black font-serif text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-amber-200 to-white">
+                $18.4M+
+              </div>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider badge-font">
+                Luxury Inventory Traded
+              </p>
+            </div>
+
+            <div className="space-y-1 p-2">
+              <div className="text-3xl sm:text-4xl font-black font-serif text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-emerald-300 via-teal-200 to-white">
+                99.8%
+              </div>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider badge-font">
+                Verified Identity Match Rate
+              </p>
+            </div>
+
+            <div className="space-y-1 p-2">
+              <div className="text-3xl sm:text-4xl font-black font-serif text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-sky-300 via-blue-200 to-white">
+                4.95 / 5.0
+              </div>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider badge-font">
+                Average Customer Rating
+              </p>
+            </div>
+
+            <div className="space-y-1 p-2">
+              <div className="text-3xl sm:text-4xl font-black font-serif text-white tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-purple-300 via-indigo-200 to-white">
+                &lt; 12 Mins
+              </div>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-wider badge-font">
+                Executive CRM Response Time
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6th: Verified Customer Reviews & Testimonials Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div className="space-y-1.5">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20 badge-font">
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              Verified VIP Feedback
+            </div>
+            <h2 className="font-serif text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+              Customer Reviews & Experiences
+            </h2>
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 font-medium max-w-xl">
+              Real feedback from verified buyers across Porsche, Ducati, Apple, and Rolex deals.
+            </p>
+          </div>
+
+          <button
+            onClick={() => setReviewModalOpen(true)}
+            className="group inline-flex items-center gap-2 px-5 py-3 rounded-full text-xs font-black text-white bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 shadow-xl shadow-brand-500/20 hover:scale-105 active:scale-95 transition-all border border-brand-400/30"
+          >
+            <Edit3 className="w-4 h-4 text-amber-300" />
+            <span>Write a Customer Review</span>
+          </button>
+        </div>
+
+        {/* Reviews Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {reviews.map((rev) => (
+            <div
+              key={rev.id}
+              className="p-6 rounded-[28px] bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-xl space-y-4 backdrop-blur-xl hover:border-brand-500/40 transition-all duration-300 flex flex-col justify-between group"
+            >
+              <div className="space-y-3">
+                {/* Rating Stars & Verified Badge */}
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-1 text-amber-400">
+                    {[...Array(rev.rating)].map((_, i) => (
+                      <span key={i} className="text-sm">★</span>
+                    ))}
+                  </div>
+                  <span className="px-3 py-1 rounded-full text-[10px] font-black bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex items-center gap-1 badge-font">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-500" /> Verified Deal
+                  </span>
+                </div>
+
+                {/* Review Message */}
+                <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-200 leading-relaxed font-medium italic">
+                  "{rev.comment}"
+                </p>
+              </div>
+
+              {/* Author Footer */}
+              <div className="pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-brand-600 to-indigo-600 text-white font-serif font-black text-sm flex items-center justify-center shadow-md border border-white/20">
+                    {rev.name.charAt(0).toUpperCase()}
+                  </div>
+                  <div>
+                    <h4 className="font-extrabold text-slate-900 dark:text-white text-xs">
+                      {rev.name}
+                    </h4>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                      {rev.location} • Deal: <strong className="text-brand-600 dark:text-brand-400">{rev.purchasedItem}</strong>
+                    </span>
+                  </div>
+                </div>
+
+                <span className="text-[10px] font-mono text-slate-400 font-bold">
+                  {rev.date}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 7th: Interactive Platform FAQ Section */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+        <div className="text-center space-y-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest bg-brand-500/10 text-brand-600 dark:text-brand-400 border border-brand-500/20 badge-font">
+            Frequently Asked Questions
+          </div>
+          <h2 className="font-serif text-3xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight">
+            Everything You Need to Know
+          </h2>
+        </div>
+
+        <div className="max-w-3xl mx-auto space-y-3">
+          {[
+            {
+              q: 'How does Smart Inquiry Auto-Matching work?',
+              a: 'When you set up your Customer Profile once, your name, email, phone, location, and purchase budget are securely stored in your browser. Every product inquiry you raise instantly attaches this identity to the seller CRM pipeline without re-entering data.',
+            },
+            {
+              q: 'Are all luxury inventory listings verified?',
+              a: 'Yes! All Cars, Bikes, Electronics, and collector items listed in DEALX undergo luxury asset verification, spec authentication, and direct seller authorization.',
+            },
+            {
+              q: 'How do I track my active queries?',
+              a: 'Click the "Queries" button in the navigation bar at any time to view all your open deal inquiries, status stages (New, In Progress, Converted), and seller response notes.',
+            },
+            {
+              q: 'Can I switch or update my active customer profile?',
+              a: 'Yes! Click "Edit Profile" or "Change Profile" anywhere on the platform to update your budget, location, or contact info.',
+            },
+          ].map((faq, idx) => (
+            <div
+              key={idx}
+              className="p-5 rounded-2xl bg-white dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 shadow-sm space-y-2 transition-all hover:border-brand-500/40"
+            >
+              <h4 className="font-serif font-black text-slate-900 dark:text-white text-sm flex items-center justify-between">
+                <span>{faq.q}</span>
+                <span className="text-brand-500 font-sans font-bold">+</span>
+              </h4>
+              <p className="text-xs text-slate-600 dark:text-slate-300 font-medium leading-relaxed">
+                {faq.a}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Write Review Modal */}
+      {reviewModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 animate-pop-in">
+          <div className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white rounded-[32px] p-6 sm:p-8 border border-slate-200 dark:border-slate-800 shadow-2xl space-y-5 max-w-lg w-full relative">
+            <button
+              onClick={() => setReviewModalOpen(false)}
+              className="absolute top-5 right-5 p-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-400 hover:text-slate-900 dark:hover:text-white"
+            >
+              ✕
+            </button>
+
+            <div className="space-y-1">
+              <h3 className="font-serif text-2xl font-black text-slate-900 dark:text-white">
+                Submit Customer Review
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">
+                Share your deal experience with the luxury marketplace community.
+              </p>
+            </div>
+
+            <form onSubmit={handleReviewSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Your Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={newReview.name}
+                  onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
+                  placeholder="e.g. Harpreet Singh"
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Location
+                  </label>
+                  <input
+                    type="text"
+                    value={newReview.location}
+                    onChange={(e) => setNewReview({ ...newReview, location: e.target.value })}
+                    placeholder="e.g. San Francisco, CA"
+                    className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                    Purchased Item
+                  </label>
+                  <input
+                    type="text"
+                    value={newReview.purchasedItem}
+                    onChange={(e) => setNewReview({ ...newReview, purchasedItem: e.target.value })}
+                    placeholder="e.g. Porsche Taycan"
+                    className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Rating Stars
+                </label>
+                <select
+                  value={newReview.rating}
+                  onChange={(e) => setNewReview({ ...newReview, rating: Number(e.target.value) })}
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
+                >
+                  <option value={5}>★★★★★ (5 Stars - Exceptional)</option>
+                  <option value={4}>★★★★☆ (4 Stars - Great)</option>
+                  <option value={3}>★★★☆☆ (3 Stars - Average)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">
+                  Review Feedback *
+                </label>
+                <textarea
+                  required
+                  rows={3}
+                  value={newReview.comment}
+                  onChange={(e) => setNewReview({ ...newReview, comment: e.target.value })}
+                  placeholder="Share details about your purchase and CRM experience..."
+                  className="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500"
+                />
+              </div>
+
+              <div className="pt-2 flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setReviewModalOpen(false)}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-indigo-600 text-white text-xs font-black shadow-md hover:scale-105 transition-all"
+                >
+                  Publish Review
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
