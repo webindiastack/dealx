@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, Link, useLocation } from 'react-router-dom';
+import { ThemeProvider } from './context/ThemeContext';
 import { ToastProvider } from './context/ToastContext';
 import { CustomerProvider, useCustomer } from './context/CustomerContext';
 import { ProductProvider } from './context/ProductContext';
@@ -10,6 +11,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 import { CustomerModal } from './components/CustomerModal';
 import { InquiryModal } from './components/InquiryModal';
+import { QueriesModal } from './components/QueriesModal';
 
 import { Home } from './pages/Home';
 import { Products } from './pages/Products';
@@ -38,22 +40,22 @@ const AdminLayout = ({ children }) => {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
       {/* Admin Top Navigation Bar */}
-      <div className="bg-white p-3 rounded-2xl border border-slate-200/90 shadow-sm flex flex-wrap items-center justify-between gap-3">
+      <div className="bg-white dark:bg-slate-900 p-3 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm flex flex-wrap items-center justify-between gap-3 transition-colors">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-800 border border-amber-300 flex items-center justify-center font-bold">
-            <ShieldCheck className="w-4 h-4 text-amber-600" />
+          <div className="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700/60 flex items-center justify-center font-bold">
+            <ShieldCheck className="w-4 h-4 text-amber-600 dark:text-amber-400" />
           </div>
-          <span className="heading-font text-sm font-bold text-slate-900">Executive CRM Admin</span>
+          <span className="heading-font text-sm font-bold text-slate-900 dark:text-white">Executive CRM Admin</span>
         </div>
 
         {/* Sub-nav tabs */}
-        <div className="flex items-center gap-1 bg-slate-100 p-1 rounded-xl border border-slate-200 text-xs">
+        <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800/80 p-1 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
           <Link
             to="/admin"
             className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
               isActive('/admin')
-                ? 'bg-white text-amber-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-900 text-amber-900 dark:text-amber-300 shadow-sm'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <LayoutDashboard className="w-3.5 h-3.5" /> Overview
@@ -62,8 +64,8 @@ const AdminLayout = ({ children }) => {
             to="/admin/products"
             className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
               isActive('/admin/products')
-                ? 'bg-white text-amber-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-900 text-amber-900 dark:text-amber-300 shadow-sm'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Package className="w-3.5 h-3.5" /> Products
@@ -72,8 +74,8 @@ const AdminLayout = ({ children }) => {
             to="/admin/customers"
             className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
               isActive('/admin/customers')
-                ? 'bg-white text-amber-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-900 text-amber-900 dark:text-amber-300 shadow-sm'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <Users className="w-3.5 h-3.5" /> Customers
@@ -82,8 +84,8 @@ const AdminLayout = ({ children }) => {
             to="/admin/inquiries"
             className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
               isActive('/admin/inquiries')
-                ? 'bg-white text-amber-900 shadow-sm'
-                : 'text-slate-600 hover:text-slate-900'
+                ? 'bg-white dark:bg-slate-900 text-amber-900 dark:text-amber-300 shadow-sm'
+                : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white'
             }`}
           >
             <MessageSquare className="w-3.5 h-3.5" /> Inquiries
@@ -92,7 +94,7 @@ const AdminLayout = ({ children }) => {
 
         <button
           onClick={logoutAdmin}
-          className="px-3 py-1.5 rounded-xl bg-slate-100 border border-slate-200 text-rose-600 hover:bg-rose-50 text-xs font-bold transition-colors flex items-center gap-1.5"
+          className="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-xs font-bold transition-colors flex items-center gap-1.5"
         >
           <LogOut className="w-3.5 h-3.5" /> Exit Admin
         </button>
@@ -108,6 +110,7 @@ export function AppContent() {
   const location = useLocation();
 
   const [customerModalOpen, setCustomerModalOpen] = useState(false);
+  const [queriesModalOpen, setQueriesModalOpen] = useState(false);
   const [isFirstVisit, setIsFirstVisit] = useState(false);
   const [inquiryProduct, setInquiryProduct] = useState(null);
 
@@ -129,12 +132,13 @@ export function AppContent() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
+    <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 transition-colors duration-300">
       <Navbar
         onOpenCustomerModal={() => {
           setIsFirstVisit(false);
           setCustomerModalOpen(true);
         }}
+        onOpenQueriesModal={() => setQueriesModalOpen(true)}
       />
 
       <main className="flex-1">
@@ -149,6 +153,7 @@ export function AppContent() {
                   setIsFirstVisit(false);
                   setCustomerModalOpen(true);
                 }}
+                onOpenQueriesModal={() => setQueriesModalOpen(true)}
               />
             }
           />
@@ -211,6 +216,11 @@ export function AppContent() {
         onClose={() => setCustomerModalOpen(false)}
       />
 
+      <QueriesModal
+        isOpen={queriesModalOpen}
+        onClose={() => setQueriesModalOpen(false)}
+      />
+
       <InquiryModal
         product={inquiryProduct}
         isOpen={!!inquiryProduct}
@@ -227,16 +237,18 @@ export function AppContent() {
 
 export default function App() {
   return (
-    <ToastProvider>
-      <AuthProvider>
-        <CustomerProvider>
-          <ProductProvider>
-            <InquiryProvider>
-              <AppContent />
-            </InquiryProvider>
-          </ProductProvider>
-        </CustomerProvider>
-      </AuthProvider>
-    </ToastProvider>
+    <ThemeProvider>
+      <ToastProvider>
+        <AuthProvider>
+          <CustomerProvider>
+            <ProductProvider>
+              <InquiryProvider>
+                <AppContent />
+              </InquiryProvider>
+            </ProductProvider>
+          </CustomerProvider>
+        </AuthProvider>
+      </ToastProvider>
+    </ThemeProvider>
   );
 }

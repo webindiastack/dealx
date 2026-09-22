@@ -14,7 +14,14 @@ export const ProductProvider = ({ children }) => {
       setStoredData(STORAGE_KEYS.PRODUCTS, INITIAL_PRODUCTS);
       return INITIAL_PRODUCTS;
     }
-    return saved;
+    // Sync latest seed product images with stored data
+    return saved.map((p) => {
+      const seedMatch = INITIAL_PRODUCTS.find((init) => init.id === p.id);
+      if (seedMatch) {
+        return { ...p, images: seedMatch.images };
+      }
+      return p;
+    });
   });
 
   useEffect(() => {

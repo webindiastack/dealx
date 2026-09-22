@@ -15,6 +15,7 @@ export const INITIAL_PRODUCTS = [
       'Interior': 'Race-Tex Slate Gray'
     },
     images: [
+      '/luxury_taycan.png',
       'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1000&q=80'
     ],
@@ -38,6 +39,7 @@ export const INITIAL_PRODUCTS = [
       'Brakes': 'Brembo Stylema R'
     },
     images: [
+      '/ducati_v4s.png',
       'https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=1000&q=80'
     ],
@@ -61,6 +63,7 @@ export const INITIAL_PRODUCTS = [
       'Color': 'Space Black'
     },
     images: [
+      '/macbook_m3_pro.png',
       'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?auto=format&fit=crop&w=1000&q=80'
     ],
@@ -84,6 +87,7 @@ export const INITIAL_PRODUCTS = [
       'Power Reserve': '70 Hours'
     },
     images: [
+      '/rolex_kermit_watch.png',
       'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=1000&q=80'
     ],

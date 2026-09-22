@@ -8,7 +8,7 @@ export const CATEGORIES = [
     badgeText: 'Popular',
     color: 'from-blue-600 to-slate-900',
     bgGlow: 'rgba(2, 132, 199, 0.15)',
-    bannerImg: 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80',
+    bannerImg: '/luxury_taycan.png',
   },
   {
     id: 'bikes',
@@ -19,7 +19,7 @@ export const CATEGORIES = [
     badgeText: 'Trending',
     color: 'from-slate-900 to-blue-700',
     bgGlow: 'rgba(15, 23, 42, 0.15)',
-    bannerImg: 'https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=800&q=80',
+    bannerImg: '/ducati_v4s.png',
   },
   {
     id: 'electronics',
@@ -30,7 +30,7 @@ export const CATEGORIES = [
     badgeText: 'Hot Deals',
     color: 'from-blue-700 to-slate-800',
     bgGlow: 'rgba(2, 132, 199, 0.15)',
-    bannerImg: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
+    bannerImg: '/macbook_m3_pro.png',
   },
   {
     id: 'other',
@@ -41,6 +41,6 @@ export const CATEGORIES = [
     badgeText: 'Exclusive',
     color: 'from-slate-800 to-blue-600',
     bgGlow: 'rgba(15, 23, 42, 0.15)',
-    bannerImg: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
+    bannerImg: '/rolex_kermit_watch.png',
   },
 ];

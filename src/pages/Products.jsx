@@ -66,40 +66,40 @@ export const Products = ({ onRaiseInquiry }) => {
       {/* Header Title */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <span className="text-xs font-mono uppercase tracking-wider text-brand-600 font-bold">
+          <span className="text-xs font-mono uppercase tracking-wider text-brand-600 dark:text-brand-400 font-bold">
             Live Inventory
           </span>
-          <h1 className="heading-font text-3xl sm:text-4xl font-extrabold text-slate-900 mt-1">
+          <h1 className="heading-font text-3xl sm:text-4xl font-extrabold text-slate-900 dark:text-white mt-1">
             Product Catalog
           </h1>
-          <p className="text-xs text-slate-500 mt-1">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
             Browse items and click "Raise Inquiry" to submit a customer inquiry directly.
           </p>
         </div>
 
-        <div className="text-xs text-slate-600 bg-white px-4 py-2 rounded-xl border border-slate-200/90 shadow-sm self-start md:self-auto font-medium">
-          Showing <strong className="text-slate-900">{filteredProducts.length}</strong> of{' '}
-          <strong className="text-slate-900">{products.length}</strong> items
+        <div className="text-xs text-slate-600 dark:text-slate-300 bg-white dark:bg-slate-900 px-4 py-2 rounded-xl border border-slate-200/90 dark:border-slate-800 shadow-sm self-start md:self-auto font-medium">
+          Showing <strong className="text-slate-900 dark:text-white">{filteredProducts.length}</strong> of{' '}
+          <strong className="text-slate-900 dark:text-white">{products.length}</strong> items
         </div>
       </div>
 
       {/* Filter Control Bar */}
-      <div className="bg-white p-4 rounded-2xl border border-slate-200/90 shadow-sm space-y-4">
+      <div className="bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-sm space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
           {/* Search Bar */}
           <div className="md:col-span-6 relative">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+            <Search className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3.5" />
             <input
               type="text"
               placeholder="Search by title, specifications, brand, location..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-10 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-brand-500"
+              className="w-full pl-10 pr-10 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 dark:placeholder-slate-500 focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:border-brand-500 dark:focus:border-brand-400"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-3 text-slate-400 hover:text-slate-700"
+                className="absolute right-3 top-3 text-slate-400 hover:text-slate-700 dark:hover:text-slate-200"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -107,8 +107,8 @@ export const Products = ({ onRaiseInquiry }) => {
           </div>
 
           {/* Max Price Filter */}
-          <div className="md:col-span-3 flex items-center gap-3 bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-200">
-            <span className="text-[10px] uppercase font-mono text-slate-500 font-bold shrink-0">
+          <div className="md:col-span-3 flex items-center gap-3 bg-slate-50 dark:bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800">
+            <span className="text-[10px] uppercase font-mono text-slate-500 dark:text-slate-400 font-bold shrink-0">
               Max: {formatCurrency(maxPrice)}
             </span>
             <input
@@ -118,17 +118,17 @@ export const Products = ({ onRaiseInquiry }) => {
               step={5000}
               value={maxPrice}
               onChange={(e) => setMaxPrice(Number(e.target.value))}
-              className="w-full accent-brand-600 cursor-pointer"
+              className="w-full accent-brand-600 dark:accent-brand-400 cursor-pointer"
             />
           </div>
 
           {/* Sort Dropdown */}
           <div className="md:col-span-3 relative">
-            <ArrowUpDown className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
+            <ArrowUpDown className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute left-3.5 top-3.5" />
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="w-full pl-10 pr-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-900 focus:outline-none focus:border-brand-500"
+              className="w-full pl-10 pr-3 py-2.5 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-brand-500 dark:focus:border-brand-400"
             >
               <option value="newest">Sort by: Newest Listed</option>
               <option value="price-asc">Sort by: Price Low to High</option>
@@ -138,13 +138,13 @@ export const Products = ({ onRaiseInquiry }) => {
         </div>
 
         {/* Category Pills */}
-        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100">
+        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-800">
           <button
             onClick={() => handleCategoryChange('all')}
             className={`px-4 py-1.5 rounded-xl text-xs font-bold border transition-all ${
               selectedCategory === 'all'
-                ? 'bg-brand-600 text-white border-brand-600 shadow-sm'
-                : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                ? 'bg-brand-600 dark:bg-brand-500 text-white border-brand-600 dark:border-brand-500 shadow-sm'
+                : 'bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
             }`}
           >
             All Categories ({products.length})
@@ -159,8 +159,8 @@ export const Products = ({ onRaiseInquiry }) => {
                 onClick={() => handleCategoryChange(cat.id)}
                 className={`px-4 py-1.5 rounded-xl text-xs font-bold border transition-all ${
                   isSelected
-                    ? 'bg-brand-600 text-white border-brand-600 shadow-sm'
-                    : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                    ? 'bg-brand-600 dark:bg-brand-500 text-white border-brand-600 dark:border-brand-500 shadow-sm'
+                    : 'bg-slate-50 dark:bg-slate-950 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800'
                 }`}
               >
                 {cat.name} ({catCount})
@@ -170,20 +170,20 @@ export const Products = ({ onRaiseInquiry }) => {
         </div>
       </div>
 
-      {/* Product Grid */}
+      {/* Product Grid - Wide Horizontal Layout for Proper Page Alignment */}
       {filteredProducts.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredProducts.map((product) => (
             <ProductCard key={product.id} product={product} onRaiseInquiry={onRaiseInquiry} />
           ))}
         </div>
       ) : (
-        <div className="bg-white rounded-3xl p-12 text-center space-y-4 border border-slate-200 shadow-sm">
-          <div className="w-12 h-12 rounded-2xl bg-slate-100 border border-slate-200 flex items-center justify-center text-slate-400 mx-auto">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-12 text-center space-y-4 border border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="w-12 h-12 rounded-2xl bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-slate-400 mx-auto">
             <Search className="w-6 h-6" />
           </div>
-          <h3 className="heading-font text-lg font-bold text-slate-900">No Matching Products Found</h3>
-          <p className="text-xs text-slate-500 max-w-sm mx-auto">
+          <h3 className="heading-font text-lg font-bold text-slate-900 dark:text-white">No Matching Products Found</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
             Try adjusting your search terms, price filter slider, or category selection.
           </p>
           <button
@@ -192,7 +192,7 @@ export const Products = ({ onRaiseInquiry }) => {
               setSelectedCategory('all');
               setMaxPrice(250000);
             }}
-            className="px-4 py-2 rounded-xl bg-brand-600 text-white text-xs font-bold hover:bg-brand-700 transition-colors shadow-sm"
+            className="px-4 py-2 rounded-xl bg-brand-600 dark:bg-brand-500 text-white text-xs font-bold hover:bg-brand-700 transition-colors shadow-sm"
           >
             Reset Filters
           </button>
